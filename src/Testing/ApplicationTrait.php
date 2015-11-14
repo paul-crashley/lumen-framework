@@ -241,6 +241,25 @@ trait ApplicationTrait
 
         return $this;
     }
+    
+    /**
+     * Assert that an expected number of rows exists in the database.
+     *
+     * @param  string  $table
+     * @param  int $expected
+     * @param  array  $data
+     * @return $this
+     */
+    protected function countInDatabase($table, $expected, array $data)
+    {
+        $count = $this->app->make('db')->table($table)->where($data)->count();
+
+        $this->assertEquals($expected, $count, sprintf(
+            'Number of rows in table [%s] that matched attributes [%s] is not as expected.', $table, json_encode($data)
+        ));
+
+        return $this;
+    }
 
     /**
      * Seed a given database connection.
